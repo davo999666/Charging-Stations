@@ -1,37 +1,28 @@
 import userRepository from "../repositories/userRepository.js";
-import bcrypt from "bcrypt";
 import { sendEmail } from "../utils/sendEmail.js";
 import NodeCache from "node-cache";
+import {createHash} from "../utils/createHash.js";
 const cache = new NodeCache({ stdTTL: 300 });
 
 class UserService {
     async login(user) {
         return userRepository.login(user);
     }
-
     async register(user) {
-
-        const hash = await bcrypt.hash(user.password, 12);
+        const hash = await createHash(user.password);
         delete user.password;
-
         const code = Math.floor(1000 + Math.random() * 9000).toString();
-
         const data = {
             ...user,
             password_hash: hash,
             code
         };
-
         cache.set(`pending:${user.login}`, data);
-        console.log("SET KEY:", `pending:${user.login}`);
         await sendEmail("verify", user.email, { code });
-
-
         return { message: "Verification code sent to email" };
     }
 
     async verify({login, code}) {
-        console.log("GET KEY:", `pending:${login}`);
         const data = cache.get(`pending:${login}`);
         if (!data) throw new Error("Verification expired or not found");
 

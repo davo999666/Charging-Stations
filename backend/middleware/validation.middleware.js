@@ -6,7 +6,7 @@ const schemas = {
         fullName: Joi.string().min(3).max(100).required(),
         email: Joi.string().email().max(100).required(),
         phone: Joi.string().pattern(/^[0-9+\-() ]{7,20}$/).required(),
-        password: Joi.string().min(8).max(64).required(),
+        password: Joi.string().min(4).max(64).required(),
         role: Joi.string().valid("user", "admin").default("user"),
     }),
 
@@ -19,6 +19,10 @@ const schemas = {
         oldPassword: Joi.string().required(),
         newPassword: Joi.string().min(8).max(64).required(),
     }),
+    verification: Joi.object({
+        login: Joi.string().min(3).max(50).required(), // "david1"
+        code: Joi.string().length(4).pattern(/^\d+$/).required() // "4486"
+    })
 };
 
 const validation = (schemaName, target = "body") => {

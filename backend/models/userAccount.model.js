@@ -1,6 +1,7 @@
 import { sequelize } from "../config/database.js";
 import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
+import {createHash} from "../utils/createHash.js";
 
 const User = sequelize.define(
     "User",
@@ -51,7 +52,10 @@ const User = sequelize.define(
 // 👇 Add instance method for password validation
 User.prototype.validatePassword = async function (password) {
     if (!password) throw new Error("Password is required");
-    return bcrypt.compare(password, this.getDataValue("password_hash"));
+    if (!this.password_hash) {
+        throw new Error("Password hash is missing. Did you load it with scope('withPassword')?");
+    }
+    return await bcrypt.compare(password, this.password_hash);
 };
 
 // 👇 Safety net: remove hash when converting to JSON
@@ -59,6 +63,13 @@ User.prototype.toJSON = function () {
     const values = { ...this.get() };
     delete values.password_hash;
     return values;
+};
+User.prototype.setPassword = async function (newPassword) {
+    if (!newPassword) {
+        throw new Error("Password is required");
+    }
+    const hash = await createHash(newPassword)
+    this.setDataValue("password_hash", hash); // save hash as string
 };
 
 export default User;

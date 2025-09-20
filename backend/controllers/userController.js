@@ -23,7 +23,6 @@ class UserController {
     async register(req, res, next) {
         try {
             const user = await userService.register(req.body);
-            console.log(user.password);
             return res.status(200).json(user);
         }catch(err) {
             console.log(err);
