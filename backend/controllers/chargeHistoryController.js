@@ -1,4 +1,5 @@
 import chargeHistoryService from "../services/chargeHistoryService.js";
+import userService from "../services/userService.js";
 
 class ChargeHistoryController {
     async start(req, res, next) {
@@ -19,21 +20,30 @@ class ChargeHistoryController {
         }
     }
 
-    async getHistory(req, res, next) {
+    async getHistoryUser(req, res, next) {
         try {
-            const { login, station_id } = req.query;
-
-            let history;
-            if (login) {
-                history = await chargeHistoryService.getHistoryByUser(login);
-            } else if (station_id) {
-                history = await chargeHistoryService.getHistoryByStation(station_id);
-            } else {
-                return res.status(400).json({ message: "Provide login or station_id" });
+            const { login } = req.query;
+            if (!login) {
+                return res.status(400).json({ message: "login is required" });
             }
-
-            res.json(history);
+            const history = await chargeHistoryService.getHistoryByUser(login);
+            return res.json(history);
         } catch (err) {
+            console.error("getHistoryUser error:", err);
+            next(err);
+        }
+    }
+
+    async getHistoryStation(req, res, next) {
+        try {
+            const { station_id } = req.query; // ✅ get only the value
+            if (!station_id) {
+                return res.status(400).json({ message: "station_id is required" });
+            }
+            const history = await chargeHistoryService.getHistoryByStation(station_id);
+            return res.json(history);
+        } catch (err) {
+            console.error("getHistoryStation error:", err);
             next(err);
         }
     }

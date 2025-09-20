@@ -30,6 +30,25 @@ export async function sendEmail(type, to, data) {
             text = `Your last charge: ${data.amount}. Balance: ${data.balance}`;
             html = `<p>Your last charge: <b>${data.amount}</b><br/>Balance: <b>${data.balance}</b></p>`;
             break;
+        case "chargingStart":
+            subject = "Charging Started";
+            text = `Your charging session started at ${data}`;
+            html = `<p>Your charging session started <br/>at <b>${data}</b></p>`;
+            break;
+
+        case "chargingEnd":
+            subject = "Charging Ended";
+            text = `Charging ended at ${data}. Energy: ${data.energy}. Total price: ${data.total}`;
+            html = `
+                <p>Charging started in address <b>${data.address}</b></p>
+                <p>Charging started at <b>${data.start}</b></p>
+                <p>Charging ended at <b>${data.end}</b></p>
+                <p>Energy used: <b>${data.energy}</b></p>
+                <p>Total price: <b>${data.total}</b></p>
+                <p>Total price: <b>${data.time}</b></p>
+            `;
+            break;
+
 
         default:
             throw new Error("Unknown email type");

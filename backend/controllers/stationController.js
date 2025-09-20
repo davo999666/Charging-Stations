@@ -12,8 +12,8 @@ class StationController {
 
     async updateStation(req, res, next) {
         try {
-            const { name, restData } = req.body;
-            const station = await stationService.updateStation(name, restData);
+            const { id, restData } = req.body;
+            const station = await stationService.updateStation(id, restData);
 
             if (!station) {
                 return res.status(404).json({ message: "Station not found" });
@@ -27,9 +27,15 @@ class StationController {
 
     async getAllStations(req, res, next) {
         try {
-            const stations = await stationService.getAllStations();
-            res.json(stations);
+            if (req.principal) {
+                const success = await stationService.getAllStationsUser(req, res, next);
+                res.status(200).json(success);
+            } else {
+                const success = await stationService.getAllStations(req, res, next);
+                res.status(200).json(success);
+            }
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }

@@ -5,10 +5,9 @@ class StationRepository {
         return Station.create(stationData);
     }
 
-    async updateByName(name, updates) {
-        const station = await Station.findOne({ where: { name } });
+    async updateById(id, updates) {
+        const station = await Station.findByPk(id);
         if (!station) return null;
-
         await station.update(updates);
         return station;
     }
@@ -17,8 +16,8 @@ class StationRepository {
         return await Station.findAll();
     }
 
-    async findById(id) {
-        return await Station.findByPk(id);
+    async find(id) {
+        return await Station.findAll();
     }
 }
 

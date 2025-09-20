@@ -11,7 +11,6 @@ class ChargeHistoryRepository {
                 {
                     model: User,
                     where: { login },
-                    attributes: { exclude: ["password", "password_hash"] } // ✅ hide sensitive fields
                 }
             ],
             where: { station_id, end_time: null }
@@ -24,14 +23,7 @@ class ChargeHistoryRepository {
 
     async findByUser(login) {
         return await ChargeHistory.findAll({
-            include: [
-                {
-                    model: User,
-                    where: { login },
-                    attributes: { exclude: ["password", "password_hash"] } // ✅ hide sensitive fields
-                },
-                Station
-            ]
+            include: [{model: User, where: { login },}, Station]
         });
     }
 
