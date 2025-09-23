@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 const SignIn = () => {
     const [Username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [login, { data, error, isLoading }] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
