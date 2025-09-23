@@ -16,8 +16,11 @@ class StationRepository {
         return await Station.findAll();
     }
 
-    async find(id) {
-        return await Station.findAll();
+    async findById(id) {
+        return await Station.findByPk(id);
+    }
+    async deleteById(id) {
+        return await Station.destroy({ where: { id } });
     }
 }
 

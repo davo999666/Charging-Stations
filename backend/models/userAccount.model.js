@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import {createHash} from "../utils/createHash.js";
 
+
 const User = sequelize.define(
     "User",
     {

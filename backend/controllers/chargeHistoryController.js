@@ -1,5 +1,4 @@
 import chargeHistoryService from "../services/chargeHistoryService.js";
-import userService from "../services/userService.js";
 
 class ChargeHistoryController {
     async start(req, res, next) {

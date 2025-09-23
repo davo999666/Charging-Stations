@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/login',validation('login'), userController.login);
 router.post('/verification',validation('verification'), userController.verification)
 router.post('/register',validation('register'), userController.register);
-router.post('/reset-password',authenticationMiddleware, userController.resetPassword)
+router.post('/reset-password/:login', authenticationMiddleware, validation("changePassword"), userController.resetPassword)
 
 
 

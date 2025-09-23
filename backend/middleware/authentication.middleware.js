@@ -20,7 +20,6 @@ const base64Auth = async (req, res, next) => {
     if (!isValid) {
         return res.status(403).json({ message: "Forbidden: Invalid credentials" });
     }
-
     req.principal = { login: user.login, role: user.role };
 
     next();

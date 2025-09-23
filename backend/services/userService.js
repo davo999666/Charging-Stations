@@ -2,7 +2,8 @@ import userRepository from "../repositories/userRepository.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import NodeCache from "node-cache";
 import {createHash} from "../utils/createHash.js";
-const cache = new NodeCache({ stdTTL: 300 });
+import {User} from "../models/index.js";
+export const cache = new NodeCache({ stdTTL: 300 });
 
 class UserService {
     async login(user) {
@@ -40,8 +41,13 @@ class UserService {
         return { message: "User verified and registered", user };
     }
 
-    async resetPassword(user) {
-        return userRepository.resetPassword(user);
+    async resetPassword(login,passwords) {
+        const { currentPassword, newPassword } = passwords
+        const user = await User.scope("withPassword").findByPk(login);
+        if (!user) throw new Error("User not found");
+        const valid = await user.validatePassword(currentPassword);
+        if (!valid) throw new Error("Current password is incorrect");
+        return userRepository.resetPassword(user, newPassword);
     }
 }
 

@@ -15,14 +15,9 @@ class UserRepository {
         return user;
     }
 
-    async resetPassword({ login, currentPassword, newPassword }) {
-        const user = await User.scope("withPassword").findByPk(login);
-        if (!user) throw new Error("User not found");
-        const valid = await user.validatePassword(currentPassword);
-        if (!valid) throw new Error("Current password is incorrect");
+    async resetPassword(user, newPassword) {
         await user.setPassword(newPassword);
         await user.save();
-
         return user;
     }
 }

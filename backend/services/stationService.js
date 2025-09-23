@@ -1,8 +1,11 @@
 import stationRepo from "../repositories/stationRepository.js";
 
 class StationService {
+    async getStationById(id){
+        return await stationRepo.findById(id);
+    }
     async addStation(data) {
-        if (!data.name || !data.latitude || !data.longitude) {
+        if (!data.city || !data.address || !data.latitude || !data.longitude) {
             throw new Error("Missing required station fields");
         }
         return stationRepo.create(data);
@@ -13,9 +16,7 @@ class StationService {
             throw new Error("Station name and update data required");
         }
         // Merge array of objects into one object
-        console.log(restData);
         const updates = restData.reduce((acc, item) => ({ ...acc, ...item }), {});
-        console.log(updates);
         return await stationRepo.updateById(id, updates);
     }
     async getAllStationsUser() {
@@ -29,6 +30,17 @@ class StationService {
             longitude: station.longitude,
             status: null
         }))
+    };
+    async deleteStation(id) {
+        // check if station exists
+        const existing = await stationRepo.findById(id);
+        if (!existing) {
+            throw new Error("Station not found");
+        }
+
+        // delete and return confirmation
+        await stationRepo.deleteById(id);
+        return { message: "Station deleted" };
     }
 }
 

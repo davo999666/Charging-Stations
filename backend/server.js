@@ -1,9 +1,9 @@
 import express from "express";
 import { sequelize } from "./config/database.js";
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRouter.js";
 import errorHandler from "./middleware/error.middleware.js";
 import { syncModels } from "./models/index.js";
-import stationRoutes from "./routes/stationRoutes.js";
+import stationRoutes from "./routes/stationRouter.js";
 import chargeHistoryRoutes from "./routes/chargeHistoryRoutes.js";
 import {initAdmin} from "./config/initAdmin.js";
 
@@ -21,7 +21,7 @@ app.use(errorHandler);
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log("✅ Connected to PostgreSQL");
+        console.log("✅ Connected to DB");
 
         await syncModels();
         console.log("✅ Models synced successfully");
@@ -35,3 +35,5 @@ app.use(errorHandler);
         console.error("❌ DB connection error:", err.message);
     }
 })();
+
+export default app;

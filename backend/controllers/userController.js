@@ -30,15 +30,15 @@ class UserController {
         }
     }
     async resetPassword(req, res, next) {
-       try {
-           const user = await userService.resetPassword(req.body);
-           return res.status(200).json(user);
-       }catch(err) {
-           console.log(err);
-           next(err);
-       }
-
-
+        try {
+            const { login } = req.params;       // get login from query string
+            const  newPassword  = req.body;
+            const user = await userService.resetPassword(login, newPassword);
+            return res.status(200).json({ message: "Password reset successful", user });
+        } catch (err) {
+            console.error("Error resetting password:", err);
+            next(err);
+        }
     }
 }
 

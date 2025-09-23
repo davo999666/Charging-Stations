@@ -4,7 +4,7 @@ import {sendEmail} from "../utils/sendEmail.js";
 import {formatDate} from "../utils/dateFormat.js";
 import stationRepo from "../repositories/stationRepository.js";
 import {timePassed} from "../utils/timePassed.js";
-// helpfo
+
 class ChargeHistoryService {
     async startCharging({ login, station_id }) {
         if (!login || !station_id) throw new Error("Login and station_id required");
@@ -58,7 +58,7 @@ class ChargeHistoryService {
 
         // 6. Email
         await sendEmail("chargingEnd", user.email, {
-            address: null,
+            address: station.address,
             start: formatDate(history.start_time).time,
             end: date.time,
             energy: history.energy_kwh,

@@ -40,12 +40,13 @@ export async function sendEmail(type, to, data) {
             subject = "Charging Ended";
             text = `Charging ended at ${data}. Energy: ${data.energy}. Total price: ${data.total}`;
             html = `
+                            <p>Your charging ended</p>
                 <p>Charging started in address <b>${data.address}</b></p>
                 <p>Charging started at <b>${data.start}</b></p>
                 <p>Charging ended at <b>${data.end}</b></p>
                 <p>Energy used: <b>${data.energy}</b></p>
                 <p>Total price: <b>${data.total}</b></p>
-                <p>Total price: <b>${data.time}</b></p>
+                <p>Total time: <b>${data.time}</b></p>
             `;
             break;
 
