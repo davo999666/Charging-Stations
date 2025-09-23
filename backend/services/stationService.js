@@ -1,9 +1,6 @@
 import stationRepo from "../repositories/stationRepository.js";
 
 class StationService {
-    async getStationById(id){
-        return await stationRepo.findById(id);
-    }
     async addStation(data) {
         if (!data.city || !data.address || !data.latitude || !data.longitude) {
             throw new Error("Missing required station fields");

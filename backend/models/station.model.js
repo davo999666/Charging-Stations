@@ -28,8 +28,8 @@ const Station = sequelize.define("Station", {
         allowNull: false
     },
     status: {
-        type: DataTypes.ENUM("free", "occupied"),
-        defaultValue: "free"
+        type: DataTypes.ENUM("available", "busy"),
+        defaultValue: "available"
     },
     energy_kwh: {
         type: DataTypes.DECIMAL(10, 2),
@@ -39,6 +39,11 @@ const Station = sequelize.define("Station", {
     price_per_kwh: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
+    },
+    fullData: {
+        type: DataTypes.JSON,
+        allowNull: false,
+        defaultValue: {},
     },
 }, {
     tableName: "stations",

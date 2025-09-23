@@ -36,10 +36,10 @@ const Search = () => {
     };
 
     return (
-        <div className="flex items-center gap-2 relative">
+        <div className="flex items-center gap-2 relative ">
             <SearchIcon
-                className="cursor-pointer text-gray-500"
-                size={16}
+                className="cursor-pointer text-gray-800 bg-auto"
+                size={28}
                 onClick={handleSearchClick}
             />
             <select
@@ -64,9 +64,9 @@ const Search = () => {
             >
                 <button
                     onClick={() => setShowFilters((s) => !s)}
-                    className="flex items-center gap-1 bg-blue-700 px-2 py-1 rounded-md hover:bg-blue-800 transition text-white"
+                    className="flex items-center gap-1 bg-blue-800 px-2 py-1 rounded-md hover:bg-blue-950 transition text-white"
                 >
-                    <Filter size={14}/>
+                    <Filter size={16}/>
                     Filter
                 </button>
 

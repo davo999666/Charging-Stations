@@ -19,11 +19,10 @@ const schemas = {
         params: Joi.object({
             login: Joi.string().required(), // validate login param
         }),
-        currentPassword: Joi.string().required(),
         newPassword: Joi.string().min(4).max(64).required(),
     }),
     verification: Joi.object({
-        login: Joi.string().min(3).max(50).required(), // "david1"
+        email: Joi.string().email().max(100).required(),
         code: Joi.string().length(4).pattern(/^\d+$/).required() // "4486"
     })
 };

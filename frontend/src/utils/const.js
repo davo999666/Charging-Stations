@@ -1,0 +1,1 @@
+export const createToken = (login, password) => `Basic ${btoa(login + ':' + password)}`;

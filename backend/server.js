@@ -6,12 +6,17 @@ import { syncModels } from "./models/index.js";
 import stationRoutes from "./routes/stationRouter.js";
 import chargeHistoryRoutes from "./routes/chargeHistoryRoutes.js";
 import {initAdmin} from "./config/initAdmin.js";
+import {corsOptions} from "./config/corsOptions.js";
+import cors from 'cors';
+
+
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.use(cors(corsOptions));
 app.use("/users", userRoutes);
 app.use("/stations", stationRoutes);
 app.use("/charging", chargeHistoryRoutes);

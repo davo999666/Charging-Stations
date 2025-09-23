@@ -1,17 +1,7 @@
 import stationService from "../services/stationService.js";
 
 class StationController {
-    async getStationById(req, res) {
-        try {
-            const { id } = req.params;
-            const station = await stationService.getStationById(id);
-            if (!station) return res.status(404).json({ message: "Station not found" });
-            res.status(200).json(station);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: "Internal server error" });
-        }
-    }
+
     async addStation(req, res, next) {
         try {
             const station = await stationService.addStation(req.body);

@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useRegisterMutation } from "../../api/apiUser.js";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {createToken} from "../../utils/const.js";
+import {setToken} from "../../features/tokenSlice.js"; // adjust the path
 
 const SignUp = () => {
-    const [username, setUsername] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const dispatch = useDispatch()
+
+    const [register, { isLoading, isError, error }] = useRegisterMutation();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log({ username, fullName, email, phone, password });
+        try {
+             await register({login: username, fullName, email, phone, password,}).unwrap();
+            const token = createToken(username, password);
+            dispatch(setToken(token));
+            alert("✅ Registration successful! You can now sign in.");
+            navigate("/verification", { state: { email } });
+        } catch (err) {
+            console.error("Registration failed:", err);
+            alert("❌ Registration failed. Please try again.");
+        }
     };
 
     return (
@@ -63,10 +81,19 @@ const SignUp = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                    disabled={isLoading}
+                    className={`w-full text-white py-2 rounded-md transition ${
+                        isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                    }`}
                 >
-                    Sign Up
+                    {isLoading ? "Registering..." : "Sign Up"}
                 </button>
+
+                {isError && (
+                    <p className="text-red-600 mt-2 text-sm">
+                        {error?.data?.message || "Something went wrong"}
+                    </p>
+                )}
             </form>
         </div>
     );

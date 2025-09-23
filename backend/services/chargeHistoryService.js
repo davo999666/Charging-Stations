@@ -14,7 +14,7 @@ class ChargeHistoryService {
             throw new Error("User not found or user has no email");
         }
         const date = formatDate(new Date());
-        await stationRepo.updateById(station.id, {status: 'occupied'});
+        await stationRepo.updateById(station.id, {status: 'busy'});
 
         await sendEmail("chargingStart", user.email, date.full);
 
@@ -54,7 +54,7 @@ class ChargeHistoryService {
 
         // 5. Save
         await chargeHistoryRepo.update(history);
-        await stationRepo.updateById(station.id, { status: "free" });
+        await stationRepo.updateById(station.id, { status: "available" });
 
         // 6. Email
         await sendEmail("chargingEnd", user.email, {
