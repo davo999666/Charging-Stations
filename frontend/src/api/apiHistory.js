@@ -19,33 +19,31 @@ export const chargeHistoryApi = createApi({
     endpoints: (builder) => ({
         // POST /start
         startCharge: builder.mutation({
-            query: (data) => ({
-                url: "/start",
+            query: (station_id) => ({
+                url: `/start/${station_id}`,
                 method: "POST",
-                body: data,
             }),
             invalidatesTags: ["ChargeHistory"],
         }),
 
         // POST /stop
         stopCharge: builder.mutation({
-            query: (data) => ({
-                url: "/stop",
+            query: (station_id) => ({
+                url: `/stop/${station_id}`,
                 method: "POST",
-                body: data,
             }),
             invalidatesTags: ["ChargeHistory"],
         }),
 
         // GET /history (user’s own history)
         getUserHistory: builder.query({
-            query: () => "/history",
+            query: (station_id) => `/history/user/${station_id}`,
             providesTags: ["ChargeHistory"],
         }),
 
         // GET /history/station (admin only)
         getStationHistory: builder.query({
-            query: () => "/history/station",
+            query: (stationId) => `/history/station?station_id=${stationId}`,
             providesTags: ["ChargeHistory"],
         }),
     }),

@@ -21,15 +21,20 @@ class ChargeHistoryRepository {
         return await history.save();
     }
 
-    async findByUser(login) {
+    // chargeHistoryRepository.js
+    async findByUserAndStation(user_id, station_id) {
         return await ChargeHistory.findAll({
-            include: [{model: User, where: { login },}, Station]
+            where: { user_id, station_id },
+            include: [User, Station],
         });
     }
 
+
     async findByStation(station_id) {
         return await ChargeHistory.findAll({
-            include: [User, { model: Station, where: { id: station_id } }]
+            where: { station_id },
+            include: [User],
+            order: [["start_time", "DESC"]],
         });
     }
 }

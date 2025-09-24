@@ -3,7 +3,9 @@ import chargeHistoryService from "../services/chargeHistoryService.js";
 class ChargeHistoryController {
     async start(req, res, next) {
         try {
-            const history = await chargeHistoryService.startCharging(req.body);
+            const login = req.principal.login
+            const { station_id } = req.params;
+            const history = await chargeHistoryService.startCharging( login, station_id );
             res.status(201).json(history);
         } catch (err) {
             next(err);
@@ -12,7 +14,9 @@ class ChargeHistoryController {
 
     async stop(req, res, next) {
         try {
-            const history = await chargeHistoryService.stopCharging(req.body);
+            const login = req.principal.login
+            const { station_id } = req.params;
+            const history = await chargeHistoryService.stopCharging( login, station_id);
             res.json(history);
         } catch (err) {
             next(err);
@@ -21,11 +25,12 @@ class ChargeHistoryController {
 
     async getHistoryUser(req, res, next) {
         try {
-            const { login } = req.query;
+            const login = req.principal.login
+            const station_id = req.params.station_id;
             if (!login) {
                 return res.status(400).json({ message: "login is required" });
             }
-            const history = await chargeHistoryService.getHistoryByUser(login);
+            const history = await chargeHistoryService.getByUserAndStation(login, station_id);
             return res.json(history);
         } catch (err) {
             console.error("getHistoryUser error:", err);
@@ -35,7 +40,7 @@ class ChargeHistoryController {
 
     async getHistoryStation(req, res, next) {
         try {
-            const { station_id } = req.query; // ✅ get only the value
+            const { station_id } = req.query;
             if (!station_id) {
                 return res.status(400).json({ message: "station_id is required" });
             }

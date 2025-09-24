@@ -1,13 +1,23 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {useStartChargeMutation} from "../api/apiHistory.js";
 
 const NavMenuUser = () => {
-
+    const [startCharge, { isLoading }] = useStartChargeMutation();
     const navigate = useNavigate();
     const { state } = useLocation();
     const { station, position } = state || {};
-    console.log(position);
+
     if (!position) return null;
+    const handleStartCharging = async () => {
+        try {
+             await startCharge(station.id).unwrap();
+            navigate("/startCharging", { state:  station  });
+        } catch (err) {
+            console.error("❌ Failed to start charging:", err);
+            alert("Error starting charging");
+        }
+    };
 
     return (
         <div
@@ -22,9 +32,9 @@ const NavMenuUser = () => {
             <ul className="flex flex-col">
                 <li
                     className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/startCharging", {state: {station}})}
+                    onClick={handleStartCharging}
                 >
-                    🔋 Start Charging
+                    {isLoading ? "⏳ Starting..." : "🔋 Start Charging"}
                 </li>
                 <li
                     className="px-3 py-1 hover:bg-gray-100 cursor-pointer"

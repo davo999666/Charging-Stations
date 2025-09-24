@@ -26,13 +26,13 @@ const NavMenuAdmin = () => {
                 </li>
                 <li
                     className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => alert("📜 Get History Station")}
+                    onClick={() => navigate("/stationHistory", { state: { stationId: station.id } })}
                 >
                     📜 Get History Station
                 </li>
                 <li
                     className="px-2 text-red-600 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate(-1)} // 👈 go back
+                    onClick={() => navigate("/")} // 👈 go back
                 >
                     ❌ Cancel
                 </li>

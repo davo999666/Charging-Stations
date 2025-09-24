@@ -6,7 +6,7 @@ import stationRepo from "../repositories/stationRepository.js";
 import {timePassed} from "../utils/timePassed.js";
 
 class ChargeHistoryService {
-    async startCharging({ login, station_id }) {
+    async startCharging( login, station_id ) {
         if (!login || !station_id) throw new Error("Login and station_id required");
         const user = await User.findByPk(login);
         const station = await Station.findByPk(station_id);
@@ -28,10 +28,9 @@ class ChargeHistoryService {
     }
 
 
-    async stopCharging({ login, station_id }) {
+    async stopCharging( login, station_id ) {
         const user = await User.findByPk(login);
         const date = formatDate(new Date());
-
         const history = await chargeHistoryRepo.findActiveByUserAndStation(login, station_id);
         const station = await Station.findByPk(station_id);
 
@@ -70,8 +69,8 @@ class ChargeHistoryService {
     }
 
 
-    async getHistoryByUser(login) {
-        return await chargeHistoryRepo.findByUser(login);
+    async getByUserAndStation(login, station_id) {
+        return await chargeHistoryRepo.findByUserAndStation(login, station_id);
     }
 
     async getHistoryByStation(station_id) {

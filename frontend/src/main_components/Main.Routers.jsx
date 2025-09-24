@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import NavMenuUser from "../components/NavMenuUser.jsx";
 import NavMenuAdmin from "../components/NavMenuAdmin.jsx";
 import StartCharging from "../components/StartCharging.jsx";
+import StationHistory from "../components/StationHistory.jsx";
 
 const MainRouters = () => {
     return (
@@ -21,7 +22,8 @@ const MainRouters = () => {
                 <Route path="/AddStation" element={<AddStationForm/>}/>
                 <Route path="/menu" element={checkToken(Cookies.get("tokenHase"))  ? <NavMenuAdmin/> : <NavMenuUser/>}/>
                 <Route path="/updateStation" element={<UpdateStationForm/>}/>
-                <Route path="startCharging" element={<StartCharging/>}/>
+                <Route path="/startCharging" element={<StartCharging/>}/>
+                <Route path="/stationHistory" element={<StationHistory/>}/>
             </Routes>
     );
 };
