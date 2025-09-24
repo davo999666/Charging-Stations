@@ -10,7 +10,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="relative flex flex-col h-screen w-full bg-gray-100">
-                <Header/>
+                <Header stations={stations}/>
                 <Map stations={stations} />
                 <MainRouters/>
             </div>

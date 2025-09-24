@@ -1,16 +1,14 @@
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
 
 const MoveMapInLocation = ({ position }) => {
     const map = useMap();
-    const [firstFix, setFirstFix] = useState(true);
 
     useEffect(() => {
-        if (position && firstFix) {
+        if (position) {
             map.setView(position, map.getZoom());
-            setFirstFix(false);
         }
-    }, [position, map, firstFix]);
+    }, [position, map]);
 
     return null;
 };

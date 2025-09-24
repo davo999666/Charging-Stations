@@ -3,7 +3,7 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import Search from "../components/Search.jsx";
 import Cookies from "js-cookie";
 
-const Header = () => {
+const Header = ({stations}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const token = Cookies.get("token");
@@ -35,7 +35,7 @@ const Header = () => {
 
                 {/* Right side */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 justify-center sm:justify-end order-2 w-full sm:w-auto">
-                    <Search />
+                    <Search stations={stations} />
 
                     {token ? (
                         <div className="px-4 py-2 sm:px-4 sm:py-1 md:px-5 md:py-2 flex items-center justify-center space-x-2">

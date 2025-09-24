@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 export default function RightClickHandler() {
     const navigate = useNavigate()
     useMapEvents({
-
         contextmenu: async (e) => {
             const { lat, lng } = e.latlng;
             try {
@@ -31,14 +30,6 @@ export default function RightClickHandler() {
                         fullData
                     },
                 });
-
-
-
-
-                // const displayAddress = res.data.display_name || "Unknown location";
-                // console.log(res.data)
-                // alert(
-                //     `📍 Latitude: ${lat.toFixed(5)}, Longitude: ${lng.toFixed(5)}`);
             } catch (err) {
                 console.error("Reverse geocoding failed:", err);
             }

@@ -1,38 +1,49 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {Filter, Search as SearchIcon} from "lucide-react";
+import {useDispatch} from "react-redux";
+import {setPosition} from "../features/mapSlice.js";
+import {getCityCoords} from "../utils/cityCoords.js";
 
-const Search = () => {
+const Search = ({stations}) => {
     const [selectedCity, setSelectedCity] = useState("");
     const [showFilters, setShowFilters] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState([]);
+    const dispatch = useDispatch();
 
-    const sites = [
-        "Tel Aviv",
-        "Jerusalem",
-        "Haifa",
-        "Beersheba",
-        "Eilat",
-        "Netanya",
-        "Ashdod",
-        "Rishon LeZion",
-        "Herzliya",
-        "Petah Tikva",
-    ].sort();
+    const sites = useMemo(() => {
+        return [...new Set(stations.map(s => s.city))].sort();
+    }, [stations]);
 
-    const filters = ["Fast Charging", "Slow Charging", "Available Now"];
+    const filters = useMemo(() => {
 
+        return [
+            ...new Set([
+                ...stations.map(s => s.type),
+                ...(stations.some(s => s.status === "available") ? ["available"] : []),
+            ]),
+        ].sort();
+    }, [stations]);
     const toggleFilter = (filter) => {
         setSelectedFilters((prev) =>
             prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
         );
     };
 
-    const handleSearchClick = () => {
-        alert(
-            `Searching for: ${selectedCity || "any city"}\nFilters: ${
-                selectedFilters.length > 0 ? selectedFilters.join(", ") : "none"
-            }`
-        );
+    const handleSearchClick = async () => {
+        let position = null;
+
+        const station = stations.find(s => s.city === selectedCity);
+        if (station) {
+            position = [station.latitude, station.longitude];
+        } else {
+            position = await getCityCoords(selectedCity);
+        }
+
+        if (position) {
+            dispatch(setPosition(position));
+        } else {
+            alert("City not found");
+        }
     };
 
     return (
@@ -82,7 +93,7 @@ const Search = () => {
                                     checked={selectedFilters.includes(f)}
                                     onChange={() => toggleFilter(f)}
                                 />
-                                <span className="text-sm">{f}</span>
+                                <span className="text-sm">{f.charAt(0).toUpperCase() + f.slice(1)} Charging</span>
                             </label>
                         ))}
 

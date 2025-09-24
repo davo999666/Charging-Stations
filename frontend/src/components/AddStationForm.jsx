@@ -55,7 +55,7 @@ const AddStationForm = () => {
                     className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                     <option value="fast">Fast</option>
-                    <option value="normal">Normal</option>
+                    <option value="slow">Slow</option>
                 </select>
 
                 <input
