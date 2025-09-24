@@ -30,7 +30,7 @@ const Search = ({stations}) => {
     };
 
     const handleSearchClick = async () => {
-        let position = null;
+        let position;
 
         const station = stations.find(s => s.city === selectedCity);
         if (station) {

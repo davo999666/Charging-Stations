@@ -1,4 +1,4 @@
-import {MapContainer, TileLayer, Marker, Popup, Tooltip} from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Tooltip} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MoveMapInLocation from "./MoveMapInLocation.jsx";
 import { icons } from "../utils/markerIcons.js";
