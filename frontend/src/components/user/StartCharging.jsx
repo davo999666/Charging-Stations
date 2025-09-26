@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useStopChargeMutation} from "../api/apiHistory.js";
+import {useStopChargeMutation} from "../../api/apiHistory.js";
+import Cookies from "js-cookie";
+import {useSelector} from "react-redux";
 
 
 const StartCharging = () => {
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
-    const { state } = useLocation();
     const [stopCharge, { isLoading }] = useStopChargeMutation();
-    const station = state
+    const charging = useSelector((state) => state.store.charging);
 
     // Simulate charging increasing %
     useEffect(() => {
@@ -25,8 +26,9 @@ const StartCharging = () => {
     }, []);
     const handleEnd = async () => {
         try {
-            await stopCharge(station.id).unwrap();
-            navigate("/")
+            const history = await stopCharge(charging.station.id).unwrap();
+            await Cookies.set("tokenHase", history.User.role, { expires: 1 });
+            await navigate("/")
         } catch (err) {
             console.error("❌ Failed to stop charging:", err);
             alert("Error stopping charging");

@@ -4,27 +4,30 @@ import {sendEmail} from "../utils/sendEmail.js";
 import {formatDate} from "../utils/dateFormat.js";
 import stationRepo from "../repositories/stationRepository.js";
 import {timePassed} from "../utils/timePassed.js";
+import userRepository from "../repositories/userRepository.js";
+import {createHashToken} from "../utils/createTokenBase.js";
 
 class ChargeHistoryService {
     async startCharging( login, station_id ) {
         if (!login || !station_id) throw new Error("Login and station_id required");
-        const user = await User.findByPk(login);
+        const user =  await userRepository.updateUserRole(login, "charging")
         const station = await Station.findByPk(station_id);
         if (!user || !user.email) {
             throw new Error("User not found or user has no email");
         }
         const date = formatDate(new Date());
         await stationRepo.updateById(station.id, {status: 'busy'});
-
         await sendEmail("chargingStart", user.email, date.full);
-
-        return await chargeHistoryRepo.create({
+        const role = await createHashToken(user.role)
+        const history = await chargeHistoryRepo.create({
             user_id: login,          // assuming login is primary key in User
             station_id,
             start_time: new Date(),
             end_time: null,
-            energy_kwh: station.energy_kwh
+            energy_kwh: station.energy_kwh,
         });
+
+        return {role, ...history.dataValues}
     }
 
 
@@ -54,7 +57,7 @@ class ChargeHistoryService {
         // 5. Save
         await chargeHistoryRepo.update(history);
         await stationRepo.updateById(station.id, { status: "available" });
-
+        await userRepository.updateUserRole(login, "user")
         // 6. Email
         await sendEmail("chargingEnd", user.email, {
             address: station.address,

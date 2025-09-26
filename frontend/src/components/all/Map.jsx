@@ -1,25 +1,22 @@
-import {MapContainer, TileLayer, Marker, Tooltip} from "react-leaflet";
+import {MapContainer, TileLayer, Marker, Tooltip, Popup} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MoveMapInLocation from "./MoveMapInLocation.jsx";
-import { icons } from "../utils/markerIcons.js";
-import RightClickHandler from "./RightClickHandler.jsx";
-import {useNavigate} from "react-router-dom";
-import {checkToken} from "../utils/checkToken.js";
+import { icons } from "../../utils/markerIcons.js";
+import RightClickHandler from "../admin/RightClickHandler.jsx";
+import {checkToken} from "../../utils/checkToken.js";
 import Cookies from "js-cookie";
-import { useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import LocateControl from "./LocateControl.jsx";
+import {setStation} from "../../features/chargingSlice.js";
+import NavMenuUser from "../user/NavMenuUser.jsx";
+import NavMenuAdmin from "../admin/NavMenuAdmin.jsx";
 
 const Map = ({stations}) => {
     const telAvivPosition = [32.08, 34.78];
-    const position = useSelector((state) => state.map.position);
-    const navigate = useNavigate();
-    const handleClick = (station, e) => {
-        navigate("/menu", {
-            state: {
-                station,
-                position: { x: e.originalEvent.clientX, y: e.originalEvent.clientY },
-            },
-        });
+    const charging = useSelector(state => state.store.charging);
+    const dispatch = useDispatch();
+    const handleClick = (station) => {
+        dispatch(setStation(station));
     };
 
     return (
@@ -29,7 +26,7 @@ const Map = ({stations}) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                 />
-                {checkToken(Cookies.get("tokenHase")) ? <RightClickHandler />: null}
+                {checkToken(Cookies.get("tokenHase"), "admin") ? <RightClickHandler />: null}
                  User position
 
                 {/* Existing stations */}
@@ -42,13 +39,13 @@ const Map = ({stations}) => {
                             mouseover: (e) => e.target.openTooltip(),
                             mouseout:  (e) => e.target.closeTooltip(),
                             click: (e) => {
-                                handleClick(station, e)
+                                handleClick(station)
                                 e.target.closeTooltip()
                             },
                         }}
                     >
-                        <Tooltip direction="top" offset={[0, -10]} opacity={1}>
-                            <b>{station.name}</b>
+                        <Tooltip direction="top" offset={[0, -40]} opacity={1}>
+                            <b>{station.address}</b>
                                 <br />
                                 Type: {station.type}
                                 <br />
@@ -58,8 +55,15 @@ const Map = ({stations}) => {
                         </Tooltip>
                         </Marker>
                     ))}
+                    <Marker
+                        key={charging.station.id}
+                        position={[charging.station.latitude, charging.station.longitude]}
+                        icon={icons[charging.station.status] || icons.offline}
+                    >
+                        {checkToken(Cookies.get("tokenHase"), "admin")  ? <NavMenuAdmin/> : <NavMenuUser/>}
+                    </Marker>
                 <LocateControl />
-                <MoveMapInLocation position={position} />
+                <MoveMapInLocation />
             </MapContainer>
         </div>
     );

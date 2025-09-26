@@ -1,6 +1,6 @@
 // src/pages/Verification.jsx
 import React, { useState } from "react";
-import { useVerificationMutation } from "../api/apiUser.js";
+import { useVerificationMutation } from "../../api/apiUser.js";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector} from "react-redux";
@@ -11,7 +11,7 @@ const Verification = () => {
     const [verify, { isLoading }] = useVerificationMutation();
     const navigate = useNavigate();
     const location = useLocation();
-    const token = useSelector((state) => state.token);
+    const token = useSelector((state) => state.store.token);
 
     // we passed email via navigate state
     const email = location.state?.email;

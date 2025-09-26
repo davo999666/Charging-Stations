@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import { useDispatch } from "react-redux";
-import { setPosition } from "../features/mapSlice";
-import { startGeolocationWatch, stopGeolocationWatch } from "../utils/geolocation";
+import { setPosition } from "../../features/mapSlice.js";
+import { startGeolocationWatch, stopGeolocationWatch } from "../../utils/geolocation.js";
 
 const LocateControl = () => {
     const map = useMap();
@@ -27,7 +27,6 @@ const LocateControl = () => {
             button.onclick = () => {
                 const watchId = startGeolocationWatch(
                     (coords) => {
-                        console.log(coords)
                         dispatch(setPosition(coords));
                         map.setView(coords, 14); // 👈 move map directly
                     },

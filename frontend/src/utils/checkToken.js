@@ -6,6 +6,6 @@ import SHA256 from "crypto-js/sha256";
 
 
 
-export function checkToken(token){
-    return token === createRoleHash("admin");
+export function checkToken(token, role){
+    return token === createRoleHash(role);
 }

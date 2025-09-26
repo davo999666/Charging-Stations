@@ -20,6 +20,13 @@ class UserRepository {
         await user.save();
         return user;
     }
+    async updateUserRole(login, newRole) {
+        const user = await User.findByPk(login);
+        if (!user) throw new Error("User not found");
+        user.role = newRole;
+        await user.save();
+        return user;
+    }
 }
 
 export default new UserRepository();

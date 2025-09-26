@@ -1,6 +1,6 @@
 import { BatteryChargingIcon } from 'lucide-react';
 import {useNavigate, useLocation} from 'react-router-dom';
-import Search from "../components/Search.jsx";
+import Search from "../components/all/Search.jsx";
 import Cookies from "js-cookie";
 
 const Header = ({stations}) => {

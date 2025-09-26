@@ -1,14 +1,16 @@
 // src/components/UpdateStationForm.jsx
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import {useDeleteStationMutation, useUpdateStationMutation} from "../api/apiStation.js";
+import {  useNavigate } from "react-router-dom";
+import {useDeleteStationMutation, useUpdateStationMutation} from "../../api/apiStation.js";
+import {useSelector} from "react-redux";
 
 const UpdateStationForm = () => {
-    const location = useLocation();
+
     const navigate = useNavigate();
+    const station = useSelector((state) => state.store.charging.station);
 
     // 👇 station data passed with navigate
-    const { station } = location.state || {};
+
 
     // 👇 initialize state from existing station values
     const [city, setCity] = useState(station?.city || "");
@@ -95,7 +97,7 @@ const UpdateStationForm = () => {
                         className="w-2/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                         <option value="fast">Fast</option>
-                        <option value="normal">Normal</option>
+                        <option value="slow">Slow</option>
                     </select>
                 </div>
 

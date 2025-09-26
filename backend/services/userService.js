@@ -9,7 +9,7 @@ export const cache = new NodeCache({ stdTTL: 300 });
 class UserService {
     async login(user) {
         const foundUser = await userRepository.login(user);
-        const tokenHase = createHashToken(foundUser.role);
+        const tokenHase = await createHashToken(foundUser.role);
         return {tokenHase, foundUser};
     }
     async register(user) {

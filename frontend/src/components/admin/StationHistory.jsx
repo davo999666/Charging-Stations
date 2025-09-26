@@ -1,12 +1,12 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetStationHistoryQuery } from "../api/apiHistory.js";
+import { useNavigate } from "react-router-dom";
+import { useGetStationHistoryQuery } from "../../api/apiHistory.js";
+import {useSelector} from "react-redux";
 
 const StationHistory = () => {
-    const location = useLocation();
     const navigate = useNavigate();
-    const { stationId } = location.state;
+    const station = useSelector((state) => state.store.charging.station);
 
-    const { data: history, isLoading, error } = useGetStationHistoryQuery(stationId);
+    const { data: history, isLoading, error } = useGetStationHistoryQuery(station.id);
 
     if (isLoading) return <p>⏳ Loading history...</p>;
     if (error) return <p>❌ Failed to load history</p>;
@@ -39,7 +39,7 @@ const StationHistory = () => {
             </button>
 
             <h2 className="text-xl font-bold mb-3 text-center">
-                📜 History for Station {stationId}
+                📜 History for Station {station.id}
             </h2>
 
             <ul className="space-y-3">

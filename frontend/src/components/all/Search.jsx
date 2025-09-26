@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from "react";
 import {Filter, Search as SearchIcon} from "lucide-react";
 import {useDispatch} from "react-redux";
-import {setPosition} from "../features/mapSlice.js";
-import {getCityCoords} from "../utils/cityCoords.js";
+import {setPosition} from "../../features/mapSlice.js";
+import {getCityCoords} from "../../utils/cityCoords.js";
 
 const Search = ({stations}) => {
     const [selectedCity, setSelectedCity] = useState("");
@@ -15,7 +15,6 @@ const Search = ({stations}) => {
     }, [stations]);
 
     const filters = useMemo(() => {
-
         return [
             ...new Set([
                 ...stations.map(s => s.type),
@@ -31,14 +30,12 @@ const Search = ({stations}) => {
 
     const handleSearchClick = async () => {
         let position;
-
         const station = stations.find(s => s.city === selectedCity);
         if (station) {
             position = [station.latitude, station.longitude];
         } else {
             position = await getCityCoords(selectedCity);
         }
-
         if (position) {
             dispatch(setPosition(position));
         } else {

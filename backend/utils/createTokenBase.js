@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export function createHashToken(role) {
+export async function  createHashToken(role) {
     return crypto.createHash("sha256").update(role).digest("hex");
 }
 

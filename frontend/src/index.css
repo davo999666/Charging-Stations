@@ -5,3 +5,12 @@
     font-size: 32px;
     line-height: 32px;
 }
+.leaflet-popup-content {
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+}

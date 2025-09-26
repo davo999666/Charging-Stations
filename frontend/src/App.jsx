@@ -1,4 +1,4 @@
-import Map from "./components/Map.jsx";
+import Map from "./components/all/Map.jsx";
 import Header from "./main_components/Header.jsx";
 import {BrowserRouter} from "react-router-dom";
 import MainRouters from "./main_components/Main.Routers.jsx";
