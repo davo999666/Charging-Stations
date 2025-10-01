@@ -12,7 +12,7 @@ const stationSlice = createSlice({
     reducers: {
         setStations: (state, action) => {
             state.stations = action.payload;
-            state.filteredStations = state.stations;
+            state.filteredStations = [];
         },
         filterStations: (state, action) => {
             const { city, types = [], status } = action.payload;
@@ -25,7 +25,7 @@ const stationSlice = createSlice({
             });
         },
         resetStations: (state) => {
-            state.filteredStations = state.stations; // back to full list
+            state.filteredStations = []; // back to full list
         },
     },
 });

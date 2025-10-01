@@ -2,12 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     position: null, // [lat, lng] or null
+    zoom: 13,
 };
 
 const mapSlice = createSlice({
     name: "map",
     initialState,
     reducers: {
+        setZoom: (state, action) => {
+            state.zoom = action.payload;
+        },
         setPosition: (state, action) => {
             state.position = action.payload;
         },
@@ -17,5 +21,5 @@ const mapSlice = createSlice({
     },
 });
 
-export const { setPosition, clearPosition } = mapSlice.actions;
+export const { setPosition, clearPosition ,setZoom} = mapSlice.actions;
 export default mapSlice.reducer;

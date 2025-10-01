@@ -35,9 +35,11 @@ class StationService {
             throw new Error("Station not found");
         }
 
-        // delete and return confirmation
         await stationRepo.deleteById(id);
         return { message: "Station deleted" };
+    }
+    async getFilteredStations(filters) {
+        return await stationRepo.findStations(filters);
     }
 }
 

@@ -5,16 +5,9 @@ class UserRepository {
     async register(user) {
         return User.create(user);
     }
-
-
-    async login({ login, password }) {
-        let user = await User.scope("withPassword").findByPk(login);
-        if (!user) throw new Error("Invalid login");
-        const valid = await user.validatePassword(password);
-        if (!valid) throw new Error("Invalid password");
-        return user;
+    async findByLogin(login) {
+        return await User.findByPk(login);
     }
-
     async resetPassword(user, newPassword) {
         await user.setPassword(newPassword);
         await user.save();

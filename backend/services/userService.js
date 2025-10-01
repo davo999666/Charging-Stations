@@ -7,8 +7,12 @@ import {createHashToken} from "../utils/createTokenBase.js";
 export const cache = new NodeCache({ stdTTL: 300 });
 
 class UserService {
-    async login(user) {
-        const foundUser = await userRepository.login(user);
+    async login({ login, password }) {
+        let user = await User.scope("withPassword").findByPk(login);
+        if (!user) throw new Error("Invalid login");
+        const valid = await user.validatePassword(password);
+        if (!valid) throw new Error("Invalid password");
+        const foundUser = await userRepository.findByLogin(login);
         const tokenHase = await createHashToken(foundUser.role);
         return {tokenHase, foundUser};
     }

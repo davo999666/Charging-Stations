@@ -10,6 +10,7 @@ router.get("/all",optionalBasicAuth, stationController.getAllStations);
 router.post("/add",authentication, authorization.isAdmin('admin'), stationController.addStation);
 router.put("/update/:id",authentication, authorization.isAdmin('admin'), stationController.updateStation);
 router.delete("/delete/:id",authentication,authorization.isAdmin('admin'), stationController.deleteStation )
+router.get("/filters", authentication ,stationController.getFilteredStations)
 
 
 export default router;

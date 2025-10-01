@@ -11,8 +11,8 @@ export default function RightClickHandler() {
             try {
                 const res = await axios.get("https://nominatim.openstreetmap.org/reverse", {
                     params: {
-                        lat,
-                        lon: lng,
+                        lat: e.latlng.lat,    // correct latitude
+                        lon: e.latlng.lng,    // correct longitude
                         format: "json",
                     },
                 });

@@ -8,8 +8,6 @@ const Header = () => {
     const location = useLocation();
     const token = Cookies.get("token");
 
-
-
     const handleNavigate = () => {
         if (!token) {
             navigate(location.pathname === "/signIn" ? "/" : "/signIn");

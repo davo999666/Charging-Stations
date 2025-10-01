@@ -3,28 +3,35 @@ import {useNavigate} from "react-router-dom";
 import {useLoginMutation} from "../../api/apiUser.js";
 import {createToken} from "../../utils/const.js";
 import Cookies from "js-cookie";
+import { useLazyGetAllStationsQuery} from "../../api/apiStation.js";
+import {useDispatch} from "react-redux";
+import {setStations} from "../../features/stationSlice.js";
 
 const SignIn = () => {
     const [Username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [login, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
+    const [triggerAllStations] = useLazyGetAllStationsQuery();
+    const dispatch = useDispatch();
+
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         try {
             const token = createToken(Username, password);
-
             const result = await login({ login: Username, password }).unwrap();
-
-
-            // Cookies.remove("token");
             Cookies.set("tokenHase", result.tokenHase, { expires: 1 });
             Cookies.set("token", token, { expires: 1 });
             Cookies.set("login", result.foundUser.login, { expires: 1 });
             navigate("/");
             alert(`Welcome ${result.fullName || Username}`);
-
+            if (result) {
+                // ✅ trigger and wait for stations
+                const stations = await triggerAllStations().unwrap();
+                dispatch(setStations(stations));
+            }
         } catch (err) {
             console.error("Login failed:", err);
             alert("Login failed ❌");

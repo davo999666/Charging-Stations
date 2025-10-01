@@ -52,6 +52,22 @@ class StationController {
             console.error("Delete Station Error:", err);
             return res.status(500).json({ message: "Internal server error" });
         }
+    };
+    async getFilteredStations(req, res) {
+        try {
+            const { city, status, type } = req.query;
+            const filters = {
+                city,
+                status,                      // "available" / "not"
+                types: type ? type.split(",") : [], // supports "fast,slow"
+            };
+            console.log(filters)
+            const stations = await stationService.getFilteredStations(filters);
+            res.json(stations);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Server error" });
+        }
     }
 }
 

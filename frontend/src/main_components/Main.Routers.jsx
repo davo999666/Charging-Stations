@@ -2,7 +2,7 @@ import {Routes, Route, useLocation, Navigate, useNavigate} from "react-router-do
 import SignIn from "../accounting/guest/SignIn.jsx";
 import SignUp from "../accounting/guest/SignUp.jsx";
 import Verification from "../components/user/Verification.jsx";
-import AddStationForm from "../components/user/AddStationForm.jsx";
+import AddStationForm from "../components/admin/AddStationForm.jsx";
 import UpdateStationForm from "../components/admin/UpdateStationForm.jsx";
 import {checkToken} from "../utils/checkToken.js";
 import StartCharging from "../components/user/StartCharging.jsx";

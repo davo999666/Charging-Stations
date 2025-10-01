@@ -61,8 +61,7 @@ export const stationApi = createApi({
 });
 
 export const {
-    useGetAllStationsQuery,
-    useGetStationByIdQuery,
+    useLazyGetAllStationsQuery,
     useAddStationMutation,
     useUpdateStationMutation,
     useDeleteStationMutation,

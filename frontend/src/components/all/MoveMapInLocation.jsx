@@ -3,14 +3,15 @@ import { useMap } from "react-leaflet";
 import {useSelector} from "react-redux";
 
 
+
 const MoveMapInLocation = () => {
-    const position = useSelector(state => state.store.map.position);
+    const {position, zoom } = useSelector(state => state.store.map);
     const map = useMap();
 
     useEffect(() => {
         if (position) {
             if (Array.isArray(position)) {
-                map.setView(position, 14);
+                map.setView(position, zoom);
             }
             else {
                 console.warn("Invalid position passed to MoveMapInLocation:", position);
