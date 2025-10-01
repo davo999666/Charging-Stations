@@ -1,40 +1,71 @@
-// src/components/RightClickHandler.jsx
 import { useMapEvents } from "react-leaflet";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import AddStationForm from "./AddStationForm.jsx";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { checkToken } from "../../utils/checkToken.js";
 
 export default function RightClickHandler() {
-    const navigate = useNavigate()
-    useMapEvents({
-        contextmenu: async (e) => {
-            const { lat, lng } = e.latlng;
-            try {
-                const res = await axios.get("https://nominatim.openstreetmap.org/reverse", {
-                    params: {
-                        lat: e.latlng.lat,    // correct latitude
-                        lon: e.latlng.lng,    // correct longitude
-                        format: "json",
-                    },
-                });
-                const city = res.data.address.city || res.data.address.town || res.data.address.village || "";
-                const area = res.data.address.neighbourhood || "";
-                const road = res.data.address.road || "";
-                const number = res.data.address.house_number || "";
-                const dataAddress = { city, area, road, number };
-                const fullData = res.data
-                navigate("/AddStation", {
-                    state: {
-                        lat,
-                        lng,
-                        dataAddress,
-                        fullData
-                    },
-                });
-            } catch (err) {
-                console.error("Reverse geocoding failed:", err);
-            }
-        },
-    });
+    const [token, setToken] = useState(Cookies.get("tokenHase"));
+    const [formData, setFormData] = useState(null);
 
-    return null;
+    useEffect(() => {
+        const handleTokenChange = () => {
+            setToken(Cookies.get("tokenHase"));
+        };
+
+        window.addEventListener("tokenChange", handleTokenChange);
+
+        return () => {
+            window.removeEventListener("tokenChange", handleTokenChange);
+        };
+    }, []);
+
+    // ✅ always call hook, but run only if admin
+    useMapEvents(
+        checkToken(token, "admin")
+            ? {
+                contextmenu: async (e) => {
+                    const { lat, lng } = e.latlng;
+                    try {
+                        const res = await fetch(
+                            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+                        );
+                        const data = await res.json();
+                        const city =
+                            data.address.city ||
+                            data.address.town ||
+                            data.address.village ||
+                            "";
+                        const area = data.address.neighbourhood || "";
+                        const road = data.address.road || "";
+                        const number = data.address.house_number || "";
+                        const dataAddress = { city, area, road, number };
+
+                        setFormData({ lat, lng, dataAddress, fullData: data });
+                    } catch (err) {
+                        console.error("Reverse geocoding failed:", err);
+                    }
+                },
+            }
+            : {} // if not admin, pass empty handlers
+    );
+
+    // ✅ now conditional rendering only here
+    if (!checkToken(token, "admin")) {
+        return null;
+    }
+
+    return (
+        <>
+            {formData && (
+                <AddStationForm
+                    lat={formData.lat}
+                    lng={formData.lng}
+                    dataAddress={formData.dataAddress}
+                    fullData={formData.fullData}
+                    onClose={() => setFormData(null)}
+                />
+            )}
+        </>
+    );
 }

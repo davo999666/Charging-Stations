@@ -25,6 +25,7 @@ const SignIn = () => {
             Cookies.set("tokenHase", result.tokenHase, { expires: 1 });
             Cookies.set("token", token, { expires: 1 });
             Cookies.set("login", result.foundUser.login, { expires: 1 });
+            window.dispatchEvent(new Event("tokenChange"));
             navigate("/");
             alert(`Welcome ${result.fullName || Username}`);
             if (result) {
@@ -39,7 +40,7 @@ const SignIn = () => {
     };
 
     return (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400]">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"

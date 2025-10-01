@@ -24,11 +24,15 @@ const stationSlice = createSlice({
                 return cityMatch && typeMatch && statusMatch;
             });
         },
+        resetStationsFiltered: (state) => {
+            state.filteredStations = [];
+
+        },
         resetStations: (state) => {
-            state.filteredStations = []; // back to full list
+            state.stations = []
         },
     },
 });
 
-export const { setStations, filterStations, resetStations } = stationSlice.actions;
+export const { resetStationsFiltered, setStations, filterStations, resetStations } = stationSlice.actions;
 export default stationSlice.reducer;

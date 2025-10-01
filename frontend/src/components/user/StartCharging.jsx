@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
 import {useStopChargeMutation} from "../../api/apiHistory.js";
 import Cookies from "js-cookie";
+import {useDispatch} from "react-redux";
+import {setSwitch} from "../../features/chargingSlice.js";
 
 
 const StartCharging = () => {
     const [progress, setProgress] = useState(0);
     const navigate = useNavigate();
     const [stopCharge, { isLoading }] = useStopChargeMutation();
+    const dispatch = useDispatch();
 
     // Simulate charging increasing %
     useEffect(() => {
@@ -29,6 +32,7 @@ const StartCharging = () => {
             if(history){
                 localStorage.removeItem("chargingStationId");
                 Cookies.set("tokenHase", history.User.role, { expires: 1 });
+                await dispatch(setSwitch(false))
                 await navigate("/")
             }
         } catch (err) {
@@ -38,7 +42,7 @@ const StartCharging = () => {
     };
 
     return (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-4 w-80">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400] bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-4 w-80">
             {/* Title */}
             <h2 className="text-xl font-bold text-gray-800">Charging</h2>
 

@@ -47,11 +47,10 @@ const UpdateStationForm = () => {
     };
     const handleDelete = async () => {
         if (!window.confirm("❌ Are you sure you want to delete this station?")) return;
-
         try {
             await deleteStation(station.id).unwrap();
-            alert("✅ Station deleted successfully!");
             navigate("/"); // go back to map
+            alert("✅ Station deleted successfully!");
         } catch (err) {
             console.error("❌ Failed to delete station:", err);
             alert("❌ Failed to delete station. Please try again.");
@@ -60,7 +59,7 @@ const UpdateStationForm = () => {
 
     return (
         <div
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-6 rounded-lg w-full max-w-md">
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400] p-6 rounded-lg w-full max-w-md">
             <h2 className="text-2xl font-bold mb-6 text-center">Update Station</h2>
 
             <form onSubmit={handleSubmit} className="space-y-3">

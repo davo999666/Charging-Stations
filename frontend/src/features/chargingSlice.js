@@ -6,8 +6,12 @@ const chargingSlice = createSlice({
     initialState: {
         station: {},
         position: { lat: 0, lng: 0 },
+        switch: false,
     },
     reducers: {
+        setSwitch: (state, action) => {
+            state.switch = action.payload;
+        },
         setStation: (state, action) => {
             state.station = action.payload; // payload = station object
         },
@@ -21,5 +25,5 @@ const chargingSlice = createSlice({
     },
 });
 
-export const { setStation, setPosition, resetCharging } = chargingSlice.actions;
+export const { setSwitch, setStation, setPosition, resetCharging } = chargingSlice.actions;
 export default chargingSlice.reducer;

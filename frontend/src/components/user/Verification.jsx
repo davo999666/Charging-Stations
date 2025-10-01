@@ -31,7 +31,7 @@ const Verification = () => {
     };
 
     return (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400]">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"

@@ -1,47 +1,41 @@
-import { useNavigate } from "react-router-dom";
 import { useGetStationHistoryQuery } from "../../api/apiHistory.js";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import Modal from "../all/Modal.jsx";
 
 const StationHistory = () => {
-    const navigate = useNavigate();
-    const station = useSelector((state) => state.store.charging.station);
 
+    const station = useSelector((state) => state.store.charging.station);
     const { data: history, isLoading, error } = useGetStationHistoryQuery(station.id);
 
-    if (isLoading) return <p>⏳ Loading history...</p>;
-    if (error) return <p>❌ Failed to load history</p>;
+    if (isLoading) {
+        return (
+            <Modal>
+                <p className="text-center">⏳ Loading history...</p>
+            </Modal>
+        );
+    }
+
+    if (error) {
+        return (
+            <Modal>
+                <p className="text-center">❌ Failed to load history</p>
+            </Modal>
+        );
+    }
+
     if (!history || history.length === 0) {
         return (
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                      z-50 bg-amber-200 p-6 rounded-lg shadow-lg w-[400px] text-center">
-                {/* ❌ close button */}
-                <button
-                    onClick={() => navigate("/")}
-                    className="absolute top-2 right-2 text-red-600 hover:text-red-800 text-xl font-bold"
-                >
-                    ×
-                </button>
-
-                <p>📭 No history found for this station.</p>
-            </div>
+            <Modal>
+                <p className="text-center">📭 No history found for this station.</p>
+            </Modal>
         );
     }
 
     return (
-        <div className="top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                    z-50 bg-amber-200 p-6 rounded-lg shadow-lg w-[600px] max-h-[80vh] overflow-y-auto relative">
-            {/* ❌ close button */}
-            <button
-                onClick={() => navigate("/")}
-                className="absolute top-2 right-2 text-red-600 hover:text-red-800 text-xl font-bold"
-            >
-                ×
-            </button>
-
+        <Modal>
             <h2 className="text-xl font-bold mb-3 text-center">
                 📜 History for Station {station.id}
             </h2>
-
             <ul className="space-y-3">
                 {history.map((h) => (
                     <li key={h.id} className="p-4 border rounded-lg shadow-sm bg-white">
@@ -59,7 +53,7 @@ const StationHistory = () => {
                     </li>
                 ))}
             </ul>
-        </div>
+        </Modal>
     );
 };
 

@@ -1,12 +1,9 @@
-// src/components/AddStationForm.jsx
 import React, { useState } from "react";
 import { useAddStationMutation } from "../../api/apiStation.js";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 
-const AddStationForm = () => {
-    const location = useLocation();
-    const { lat, lng, dataAddress, fullData } = location.state || {};
+const AddStationForm = ({ lat, lng, dataAddress, fullData, onClose}) => {
     const [city, setCity] = useState(dataAddress?.city || "");
     const [address, setAddress] = useState(
         [dataAddress?.area, dataAddress?.road, dataAddress?.number].filter(Boolean).join(" ") || ""
@@ -22,14 +19,16 @@ const AddStationForm = () => {
            await addStation({city, address, latitude: lat, longitude: lng, type, price_per_kwh: price, fullData}).unwrap();
             navigate("/");
             alert("✅ Station added successfully!");
+            onClose?.();
         } catch (err) {
             console.error("❌ Failed to add station:", err);
             alert("❌ Failed to add station. Please try again.");
         }
     };
 
+
     return (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 p-6 rounded-lg w-full max-w-md">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400] p-6 rounded-lg w-full max-w-md ">
             <h2 className="text-2xl font-bold mb-6 text-center">Add Station</h2>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -87,7 +86,7 @@ const AddStationForm = () => {
                     </button>
                     <button
                         type="button"
-                        onClick={()=>{navigate("/")}}
+                        onClick={onClose}
                         className="flex-1 bg-gray-300 text-black py-2 rounded-md hover:bg-gray-400"
                     >
                         Cancel

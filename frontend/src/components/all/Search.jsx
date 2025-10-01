@@ -94,7 +94,7 @@ const Search = () => {
 
                 {showFilters && (
                     <div
-                        className="absolute top-full left-0 mt-1 bg-white text-black rounded-md shadow w-44 p-2 z-30"
+                        className="absolute top-full left-0 mt-1 bg-white text-black rounded-md shadow w-44 p-2 z-20"
                         onMouseDown={(e) => e.preventDefault()} // prevents blur from firing immediately
                     >
                         {filters.map((f, i) => (

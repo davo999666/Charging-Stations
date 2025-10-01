@@ -11,13 +11,22 @@ export default function StationsLayer() {
     const dispatch = useDispatch();
     const filteredStations = useSelector((state) => state.store.station.filteredStations) || null;
     const stations = useSelector((state) => state.store.station.stations);
+    const switchCharging = useSelector((state)=> state.store.charging.switch)
     const [triggerAllStations, { data: allStationsData }] = useLazyGetAllStationsQuery();
+
+    // Fetch once when component mounts or when switchCharging changes
     useEffect(() => {
-        triggerAllStations()
+        triggerAllStations();
+    }, [triggerAllStations, switchCharging]);
+
+// When data comes in, update Redux
+    useEffect(() => {
         if (allStationsData) {
             dispatch(setStations(allStationsData));
         }
-    }, [allStationsData]);
+    }, [allStationsData, dispatch]);
+
+
     const renderStations =
         filteredStations && filteredStations.length > 0
             ? filteredStations
@@ -31,12 +40,12 @@ export default function StationsLayer() {
     };
     return (
         <>
-            {renderStations.map((station, index) => {
+            {renderStations.map((station) => {
                 if (!station.latitude || !station.longitude) return null;
 
                 return (
                     <Marker
-                        key={station.id || index}
+                        key={`${station.id}-${station.status}`}
                         position={[station.latitude, station.longitude]}
                         icon={icons[station.status] || icons.offline}
                         eventHandlers={{
