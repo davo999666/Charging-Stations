@@ -12,8 +12,6 @@ export default function StationsLayer() {
     const filteredStations = useSelector((state) => state.store.station.filteredStations) || null;
     const stations = useSelector((state) => state.store.station.stations);
     const [triggerAllStations, { data: allStationsData }] = useLazyGetAllStationsQuery();
-    console.log("Stations ", allStationsData);
-    // ✅ When allStationsData updates, store it
     useEffect(() => {
         triggerAllStations()
         if (allStationsData) {

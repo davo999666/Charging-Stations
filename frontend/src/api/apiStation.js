@@ -62,6 +62,7 @@ export const stationApi = createApi({
 
 export const {
     useLazyGetAllStationsQuery,
+    useGetAllStationsQuery,
     useAddStationMutation,
     useUpdateStationMutation,
     useDeleteStationMutation,

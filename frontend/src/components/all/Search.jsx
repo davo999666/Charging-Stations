@@ -1,13 +1,14 @@
 import React, {useMemo, useState} from "react";
 import {Filter, Search as SearchIcon} from "lucide-react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setPosition, setZoom} from "../../features/mapSlice.js";
 import {filterStations} from "../../features/stationSlice.js";
+import {useGetAllStationsQuery} from "../../api/apiStation.js";
 import {telAvivPosition} from "../../utils/const.js";
 
 
 const Search = () => {
-    const stations = useSelector(state => state.store.station.stations);
+    const {data: stations = []} = useGetAllStationsQuery();
     const [selectedCity, setSelectedCity] = useState("");
     const [showFilters, setShowFilters] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState([]);

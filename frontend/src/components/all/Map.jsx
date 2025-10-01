@@ -21,7 +21,6 @@ const Map = () => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                 />
-
                 {checkToken(Cookies.get("tokenHase"), "admin") ? (
                     <RightClickHandler />
                 ) : null}
