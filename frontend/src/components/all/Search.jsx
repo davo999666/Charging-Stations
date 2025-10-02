@@ -5,6 +5,7 @@ import {setPosition, setZoom} from "../../features/mapSlice.js";
 import {filterStations} from "../../features/stationSlice.js";
 import {useGetAllStationsQuery} from "../../api/apiStation.js";
 import {telAvivPosition} from "../../utils/const.js";
+import {resetCharging} from "../../features/chargingSlice.js";
 
 
 const Search = () => {
@@ -33,7 +34,7 @@ const Search = () => {
 
     const handleSearchClick = async () => {
         let position;
-        // if city is selected → set map position
+        dispatch(resetCharging())
         if (selectedCity) {
             const station = stations.find((s) => s.city === selectedCity);
             if (station) {

@@ -1,15 +1,15 @@
 // src/components/UpdateStationForm.jsx
 import React, { useState } from "react";
 import {  useNavigate } from "react-router-dom";
-import {useDeleteStationMutation, useUpdateStationMutation} from "../../api/apiStation.js";
-import {useSelector} from "react-redux";
+import { useUpdateStationMutation} from "../../api/apiStation.js";
+import { useSelector} from "react-redux";
+
+
 
 const UpdateStationForm = () => {
-
     const navigate = useNavigate();
     const station = useSelector((state) => state.store.charging.station);
 
-    // 👇 station data passed with navigate
 
 
     // 👇 initialize state from existing station values
@@ -21,7 +21,6 @@ const UpdateStationForm = () => {
     const [energy, setEnergy] = useState(station?.energy_kwh || "0.00");
 
     const [updateStation, { isLoading, isError, error }] = useUpdateStationMutation();
-    const [deleteStation, { isLoading: isDeleting }] = useDeleteStationMutation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,17 +44,7 @@ const UpdateStationForm = () => {
             alert("❌ Failed to update station. Please try again.");
         }
     };
-    const handleDelete = async () => {
-        if (!window.confirm("❌ Are you sure you want to delete this station?")) return;
-        try {
-            await deleteStation(station.id).unwrap();
-            navigate("/"); // go back to map
-            alert("✅ Station deleted successfully!");
-        } catch (err) {
-            console.error("❌ Failed to delete station:", err);
-            alert("❌ Failed to delete station. Please try again.");
-        }
-    };
+
 
     return (
         <div
@@ -152,14 +141,6 @@ const UpdateStationForm = () => {
                         }`}
                     >
                         {isLoading ? "Updating..." : "Update Station"}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                        className="flex-1 bg-red-800 text-white py-2 rounded-md hover:bg-red-600 disabled:opacity-50"
-                    >
-                        {isDeleting ? "Deleting..." : "Delete Station"}
                     </button>
                     <button
                         type="button"

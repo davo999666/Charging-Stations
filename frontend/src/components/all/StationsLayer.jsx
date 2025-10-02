@@ -1,5 +1,5 @@
 // src/components/map/StationsLayer.jsx
-import { Marker, Tooltip } from "react-leaflet";
+import {Marker, Tooltip} from "react-leaflet";
 import { icons } from "../../utils/markerIcons.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useLazyGetAllStationsQuery} from "../../api/apiStation.js";
@@ -35,26 +35,22 @@ export default function StationsLayer() {
     if (!renderStations || renderStations.length === 0) {
         return null; // nothing to render
     }
-    const handleClick = (station) => {
-        dispatch(setStation(station));
-    };
     return (
         <>
-            {renderStations.map((station) => {
+            {renderStations.map((station, index) => {
                 if (!station.latitude || !station.longitude) return null;
 
                 return (
                     <Marker
-                        key={`${station.id}-${station.status}`}
+                        key={`${station.id || index}-${station.status || "no-status"}`}
                         position={[station.latitude, station.longitude]}
                         icon={icons[station.status] || icons.offline}
+                        keyboard={false}                 // avoid focus quirks
+                        bubblingMouseEvents={false}
                         eventHandlers={{
+                            click: () => dispatch(setStation(station)), // first click is enough
                             mouseover: (e) => e.target.openTooltip(),
-                            mouseout: (e) => e.target.closeTooltip(),
-                            click: (e) => {
-                                handleClick(station);
-                                e.target.closeTooltip();
-                            },
+                            mouseout:  (e) => e.target.closeTooltip(),
                         }}
                     >
                         <Tooltip direction="top" offset={[0, -40]} opacity={1}>

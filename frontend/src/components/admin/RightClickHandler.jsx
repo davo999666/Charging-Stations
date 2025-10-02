@@ -12,9 +12,7 @@ export default function RightClickHandler() {
         const handleTokenChange = () => {
             setToken(Cookies.get("tokenHase"));
         };
-
         window.addEventListener("tokenChange", handleTokenChange);
-
         return () => {
             window.removeEventListener("tokenChange", handleTokenChange);
         };

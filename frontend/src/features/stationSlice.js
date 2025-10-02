@@ -30,6 +30,7 @@ const stationSlice = createSlice({
         },
         resetStations: (state) => {
             state.stations = []
+            state.filteredStations = [];
         },
     },
 });

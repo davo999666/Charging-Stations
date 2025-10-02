@@ -32,7 +32,7 @@ const StartCharging = () => {
             if(history){
                 localStorage.removeItem("chargingStationId");
                 Cookies.set("tokenHase", history.User.role, { expires: 1 });
-                await dispatch(setSwitch(false))
+                await dispatch(setSwitch())
                 await navigate("/")
             }
         } catch (err) {

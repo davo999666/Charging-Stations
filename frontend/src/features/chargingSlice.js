@@ -9,8 +9,8 @@ const chargingSlice = createSlice({
         switch: false,
     },
     reducers: {
-        setSwitch: (state, action) => {
-            state.switch = action.payload;
+        setSwitch: (state) => {
+            state.switch = !state.switch;
         },
         setStation: (state, action) => {
             state.station = action.payload; // payload = station object
@@ -19,8 +19,7 @@ const chargingSlice = createSlice({
             state.position = action.payload; // payload = { x, y }
         },
         resetCharging: (state) => {
-            state.station = null;
-            state.position = { x: 0, y: 0 };
+            state.station = {}
         },
     },
 });

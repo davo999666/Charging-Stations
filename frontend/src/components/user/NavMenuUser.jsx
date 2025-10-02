@@ -24,7 +24,7 @@ const NavMenuUser = () => {
             map.closePopup();
             const user = await startCharge(charging.station.id).unwrap();
             if(user){
-                await dispatch(setSwitch(true))
+                await dispatch(setSwitch())
             }
             Cookies.set("tokenHase", user.role, { expires: 1 });
             localStorage.setItem("chargingStationId", charging.station.id);

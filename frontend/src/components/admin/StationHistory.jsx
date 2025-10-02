@@ -1,11 +1,13 @@
 import { useGetStationHistoryQuery } from "../../api/apiHistory.js";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import Modal from "../all/Modal.jsx";
 
-const StationHistory = () => {
 
+
+const StationHistory = () => {
     const station = useSelector((state) => state.store.charging.station);
     const { data: history, isLoading, error } = useGetStationHistoryQuery(station.id);
+
 
     if (isLoading) {
         return (
@@ -30,7 +32,7 @@ const StationHistory = () => {
             </Modal>
         );
     }
-
+    // dispatch(resetCharging());
     return (
         <Modal>
             <h2 className="text-xl font-bold mb-3 text-center">

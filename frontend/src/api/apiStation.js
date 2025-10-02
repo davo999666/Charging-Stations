@@ -55,7 +55,7 @@ export const stationApi = createApi({
                 url: `/delete/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: (result, error, id) => [{ type: "Station", id }],
+            invalidatesTags: ["Station"],
         }),
     }),
 });

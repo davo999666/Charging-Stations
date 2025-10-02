@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {resetStations} from "../features/stationSlice.js";
+import {setSwitch} from "../features/chargingSlice.js";
 
 const Header = () => {
     const location = useLocation();
@@ -15,8 +16,8 @@ const Header = () => {
         Cookies.remove("tokenHase");
         Cookies.remove("token");
         Cookies.remove("login");
-        dispatch(resetStations())
         window.dispatchEvent(new Event("tokenChange"));
+        dispatch(setSwitch())
         navigate("/");
     }
 
