@@ -10,6 +10,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import http from 'http';
 import { initSocket } from './socket.js';
+// import {setupSwagger} from "./swagger.js";
 
 export function createServer() {
     const app = express();
@@ -21,7 +22,7 @@ export function createServer() {
     app.use('/users', userRoutes);
     app.use('/stations', stationRoutes);
     app.use('/charging', chargeHistoryRoutes);
-
+    // setupSwagger(app);
     app.use(errorHandler);
 
     return app; // just return the app for testing
