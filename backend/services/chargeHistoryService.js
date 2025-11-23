@@ -4,7 +4,7 @@ import {sendEmail} from "../utils/sendEmail.js";
 import {formatDate} from "../utils/dateFormat.js";
 import stationRepo from "../repositories/stationRepository.js";
 import {timePassed} from "../utils/timePassed.js";
-import userRepository from "../repositories/userRepository.js";
+import {userRepository} from "../repositories/userRepository.js";
 import {createHashToken} from "../utils/createTokenBase.js";
 
 class ChargeHistoryService {

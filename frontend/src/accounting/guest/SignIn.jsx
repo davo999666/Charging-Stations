@@ -29,7 +29,6 @@ const SignIn = () => {
             navigate("/");
             alert(`Welcome ${result.fullName || Username}`);
             if (result) {
-                // ✅ trigger and wait for stations
                 const stations = await triggerAllStations().unwrap();
                 dispatch(setStations(stations));
             }
@@ -38,6 +37,10 @@ const SignIn = () => {
             alert("Login failed ❌");
         }
     };
+    const handleForgetPassword = async (e)=>{
+        e.preventDefault();
+        navigate("/forget-password");
+    }
 
     return (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[400]">
@@ -104,7 +107,7 @@ const SignIn = () => {
                     Don't have an account? <span className="text-blue-600 font-semibold cursor-pointer">Sign Up</span>
                 </p>
                 <p className="mt-4 text-center text-gray-600"
-                   onClick={() => alert("forget password")}>
+                   onClick={handleForgetPassword}>
                     forget password <span className="text-blue-600 font-semibold cursor-pointer">Click here</span>
                 </p>
             </form>

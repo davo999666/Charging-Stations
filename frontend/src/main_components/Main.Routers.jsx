@@ -9,6 +9,7 @@ import StationHistory from "../components/admin/StationHistory.jsx";
 import {useEffect} from "react";
 import UserHistory from "../components/user/UserHistory.jsx";
 import Cookies from "js-cookie";
+import ForgetPassword from "../accounting/guest/ForgetPassword.jsx";
 
 
 const MainRouters = () => {
@@ -31,6 +32,7 @@ const MainRouters = () => {
                 <Route path="/startCharging" element={<StartCharging/>}/>
                 <Route path="/stationHistory" element={<StationHistory/>}/>
                 <Route path="/userHistory" element={<UserHistory />} />
+                <Route path="/forget-password" element={<ForgetPassword/>}/>
             </Routes>
     );
 };

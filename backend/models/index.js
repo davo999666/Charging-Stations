@@ -10,6 +10,7 @@ ChargeHistory.belongsTo(User, { foreignKey: "user_id" });
 Station.hasMany(ChargeHistory, { foreignKey: "station_id" });
 ChargeHistory.belongsTo(Station, { foreignKey: "station_id" });
 
+
 export const syncModels = async () => {
     try {
         await sequelize.sync({ alter: true });

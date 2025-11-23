@@ -41,13 +41,11 @@ export const authApi = createApi({
             }),
         }),
 
-        resetPassword: builder.mutation({
-            query: ({ login, newPassword }) => {
-                console.log(newPassword, login);
+        sendEmailResetPassword: builder.mutation({
+            query: ({ email: email }) => {
                 return {
-                    url: `/reset-password/${login}`, // :login param
+                    url: `/forgot-password/${email}`, // :login param
                     method: "POST",
-                    body: { newPassword }, // only send the new password in the body
                 };
             },
         }),
@@ -58,5 +56,5 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useVerificationMutation,
-    useResetPasswordMutation,
+    useSendEmailResetPasswordMutation,
 } = authApi;

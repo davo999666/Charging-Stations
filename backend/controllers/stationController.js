@@ -30,6 +30,13 @@ class StationController {
         try {
             if (req.principal) {
                 const success = await stationService.getAllStationsUser(req, res, next);
+                res.cookie("authData", JSON.stringify({ token: "hello" }), {
+                    httpOnly: false,     // frontend can read
+                    secure: false,       // ❗ must be FALSE on localhost (no HTTPS)
+                    sameSite: "lax",     // ✅ works for same origin and localhost
+                    path: "/"            // ✅ cookie used on all routes
+                });
+
                 res.status(200).json(success);
             } else {
                 const success = await stationService.getAllStations(req, res, next);

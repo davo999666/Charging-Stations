@@ -1,10 +1,10 @@
-import userRepository from "../repositories/userRepository.js";
+import {userRepository} from "../repositories/userRepository.js";
 import { sendEmail } from "../utils/sendEmail.js";
-import NodeCache from "node-cache";
 import {createHash} from "../utils/createHash.js";
 import {User} from "../models/index.js";
 import {createHashToken} from "../utils/createTokenBase.js";
-export const cache = new NodeCache({ stdTTL: 300 });
+import {cache} from "../cashe/cashe.js";
+
 
 class UserService {
     async login({ login, password }) {
@@ -26,21 +26,24 @@ class UserService {
         return { message: "Verification code sent to email" };
     }
 
-    async verify({email, code}) {
+    async verify({email, code , newPassword=null}) {
         const data = cache.get(`pending:${email}`);
         if (!data) throw new Error("Verification expired or not found");
         if (data.code !== code) {
             throw new Error("Invalid code");
         }
-
         delete data.code;
-
-        const user = await userRepository.register(data);
-
+        let user;
+        if(Object.keys(data).length > 0){
+            user = await userRepository.register(data);
+        }
+        else {
+            user = await userRepository.findByEmail(email);
+            await userRepository.resetPassword(user, newPassword)
+        }
         // delete from cache (optional, TTL auto-expires anyway)
         cache.del(`pending:${email}`);
-
-        return { message: "User verified and registered", user };
+        return { message: "User verified", user };
     }
 
     async resetPassword(login, currentPassword, newPassword) {
@@ -50,6 +53,24 @@ class UserService {
         if (!valid) throw new Error("Current password is incorrect");
         return userRepository.resetPassword(user, newPassword);
     }
+    async forgotPassword (email) {
+        const user = await userRepository.findByEmail(email);
+        if (!user) throw new Error("User not found");
+        const code = Math.floor(1000 + Math.random() * 9000).toString();
+        cache.set(`pending:${user.email}`, {code});
+        await sendEmail("verify", user.email, { code });
+        return { message: "Verification code sent to email" };
+    }
+
+    async sendMessage(senderId, receiverId, text) {
+        if (!text.trim()) {
+            throw new Error("Message cannot be empty");
+        }
+        return userRepository.addMessage(senderId, receiverId, text);
+    }
+
+
+
 }
 
-export default new UserService();
+export const userService = new UserService();

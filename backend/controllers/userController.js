@@ -1,9 +1,9 @@
-import userService from "../services/userService.js";
+import {userService} from "../services/userService.js";
+
 
 class UserController {
     async verification(req, res, next) {
         try {
-
             const user = await userService.verify(req.body);
             return res.status(200).json(user);
         }catch(err) {
@@ -14,6 +14,7 @@ class UserController {
     async login(req, res, next) {
         try {
             const user = await userService.login(req.body);
+
             return res.status(200).json(user);
 
         }catch(err) {
@@ -30,9 +31,19 @@ class UserController {
             next(err);
         }
     }
+    async forgotPassword(req, res, next) {
+        try {
+            const {email} = req.params;
+            const success = await userService.forgotPassword(email);
+            return res.status(200).json(success);
+        }catch (err){
+            console.error("Error resetting password:", err);
+            next(err);
+        }
+    }
     async resetPassword(req, res, next) {
         try {
-            const { login }  = req.params;         // login from URL
+            const { login }  = req.principal;         // login from URL
             const { newPassword } = req.body;     // new password from body
             // 1. Read Authorization header
             const authHeader = req.headers["authorization"];
@@ -61,6 +72,7 @@ class UserController {
             next(err);
         }
     }
+
 }
 
-export default new UserController();
+export const userController =  new UserController();

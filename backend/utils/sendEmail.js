@@ -18,7 +18,7 @@ export async function sendEmail(type, to, data) {
             html = `<p>Your verification code is <b>${data.code}</b></p>`;
             break;
 
-        // case "resetPassword":
+        // case "forgetPassword":
         //     subject = "Reset your password";
         //     text = `Click this link to reset your password: ${data.resetUrl}`;
         //     html = `<p>Click <a href="${data.resetUrl}">here</a> to reset your password</p>`;

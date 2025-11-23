@@ -20,6 +20,10 @@ class UserRepository {
         await user.save();
         return user;
     }
+    async findByEmail(email) {
+        return await User.findOne({ where: { email } });
+    }
+
 }
 
-export default new UserRepository();
+export const userRepository = new UserRepository();

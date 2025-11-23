@@ -23,7 +23,8 @@ const schemas = {
     }),
     verification: Joi.object({
         email: Joi.string().email().max(100).required(),
-        code: Joi.string().length(4).pattern(/^\d+$/).required() // "4486"
+        code: Joi.string().length(4).pattern(/^\d+$/).required(), // "4486"
+        newPassword: Joi.string().min(4).max(64)
     })
 };
 
